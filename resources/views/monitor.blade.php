@@ -19,56 +19,9 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script src="{{ asset('js/esub-monitor/esub-vars.js') }}"></script>
     <script src="{{ asset('js/esub-monitor/esub-chart.js') }}"></script>
+    <script src="{{ asset('js/esub-monitor/chart-manager.js') }}"></script>
     <script src="{{ asset('js/esub-monitor/monitor.js') }}"></script>
-    <script>
-        var data = [];
-
-        for (var i=0; i < 10; i++) {
-            data.push({x: new Date(points[i].time), y: points[i].mean_IPTA});
-        }
-
-
-        setTimeout(function () {
-            return
-            chart.flow({
-                columns: [
-                    ['mAH', '2013-01-11', '2013-01-12', '2013-01-12'],
-                    ['Struja (mAh)', 500, 200, 100],
-                ],
-                duration: 1000,
-                done: function () {
-                    chart.flow({
-                        columns: [
-                            ['mAH', '2013-01-13', '2013-01-14', '2013-01-15'],
-                            ['Struja (mAh)', 200, 300, 100],
-                        ],
-                        length: 0,
-                        duration: 1000,
-                        done: function () {
-                            chart.flow({
-                                columns: [
-                                    ['mAH', '2013-01-16', '2013-01-17', '2013-01-18'],
-                                    ['Struja (mAh)', 200, 300, 100],
-                                ],
-                                length: 0,
-                                duration: 1000,
-                                done: function () {
-                                    chart.flow({
-                                        columns: [
-                                            ['mAH', '2013-01-19', '2013-01-20', '2013-01-21'],
-                                            ['Struja (mAh)', 500, 200, 100],
-                                        ],
-                                        duration: 1000,
-                                    });
-                                }
-                            });
-                        }
-                    });
-                },
-            });
-        }, 1000);
-
-    </script>
 @endsection

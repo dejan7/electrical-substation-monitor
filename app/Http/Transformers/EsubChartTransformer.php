@@ -25,22 +25,29 @@ class EsubChartTransformer implements \JsonSerializable
     function jsonSerialize()
     {
 
+        //return $this->points;
         $this->points = array_reverse($this->points);
 
         $lines = [];
         foreach ($this->points as $point) {
+            $i = 0;
             foreach ($point as $key => $value) {
-                if ($key == "time" || $key == "LOCATION_ID")
+                if ($key == "LOCATION_ID")
                     continue;
 
-                if (!isset($lines[$key])) {
-                    $lines[$key] = [];
-                    $lines[$key]["x"] = [];
-                    $lines[$key]["y"] = [];
+                $trKey = $key == 'time' ? 'x' : $key;
+
+                if (!isset($lines[$i])) {
+                    $lines[$i] = [];
+                    $lines[$i][] = $trKey;
                 }
 
-                $lines[$key]["x"][] = strtotime($point['time']) * 1000;
-                $lines[$key]["y"][] = $point[$key];
+                if ($trKey == 'x')
+                    $lines[$i][] = strtotime($point['time']) * 1000;
+                else
+                    $lines[$i][] = round($point[$key], 2);
+
+                $i++;
             }
         }
         return $lines;

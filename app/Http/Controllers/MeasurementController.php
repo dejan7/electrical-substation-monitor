@@ -30,6 +30,13 @@ class MeasurementController extends Controller
         $points = [$metric->toInfluxDBPoint()];
 
         InfluxDB::writePoints($points, Database::PRECISION_MILLISECONDS);
+        $cl = new \GuzzleHttp\Client();
+
+        $cl->request('POST',"localhost:3030", [
+            'json' => $metric->toArray(),
+            'headers' => ['content-type' => 'application/json']
+        ]);
+
     }
 
     /**
@@ -47,10 +54,10 @@ class MeasurementController extends Controller
         }
 
         if (!(Substation::where('location_id', $location_id)->first()))
-            return response()->json(["error" => 'Invalid location id!', 400]);
+            return response()->json(["error" => 'Invalid location id!'], 400);
 
         if ($interval == IntervalEnum::REAL_TIME)
-            return response()->json(["error" => 'This endpoint is used only for polling!', 400]);
+            return response()->json(["error" => 'This endpoint is used only for polling!'], 400);
 
         $db = \Influx::selectDB(env("INFLUX_DB_NAME") . "_" . $interval);
 
@@ -59,7 +66,7 @@ class MeasurementController extends Controller
             $queryString .= ", mean_" . $p;
         }
 
-        $queryString .= " FROM substation_data WHERE LOCATION_ID = '$location_id' GROUP BY LOCATION_ID ORDER BY time DESC LIMIT 20";
+        $queryString .= " FROM substation_data WHERE LOCATION_ID = '$location_id' GROUP BY LOCATION_ID ORDER BY time DESC LIMIT 10";
 
         $r = $db->query($queryString);
         $points = $r->getPoints();

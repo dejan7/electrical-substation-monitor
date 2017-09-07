@@ -88,16 +88,24 @@
     top: 6px;
 }
 
-/*.bb-line {
+.bb-line {
     fill: none;
-    stroke-width: 4px;
+    stroke-width: 3px;
+    /*stroke-dasharray: 5px;
+    -webkit-animation: dashoffset 3s linear infinite;
+    -moz-animation: dashoffset 3s linear infinite;
+    -o-animation: dashoffset 3s linear infinite;
+    animation: dashoffset 3s linear infinite*/
+}
+
+.realTimeChart .bb-line {
     stroke-dasharray: 5px;
     -webkit-animation: dashoffset 3s linear infinite;
     -moz-animation: dashoffset 3s linear infinite;
     -o-animation: dashoffset 3s linear infinite;
     animation: dashoffset 3s linear infinite
 }
-
+/*
 .bb-circle {
     -webkit-animation: exploding-stroke 2s linear infinite;
     -moz-animation: exploding-stroke 2s linear infinite;
@@ -242,4 +250,21 @@
         stroke-width: 20px;
         opacity: 0
     }
+}
+
+.liveTick {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #49755e;
+    vertical-align: middle;
+    -webkit-animation: exploding-stroke 2s linear infinite;
+    -moz-animation: exploding-stroke 2s linear infinite;
+    -o-animation: exploding-stroke 2s linear infinite;
+    animation: exploding-stroke 2s linear infinite;
+    display: none;
+}
+
+.realTimeChart .liveTick {
+    display: inline-block;
 }

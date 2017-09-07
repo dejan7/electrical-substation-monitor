@@ -1,5 +1,5 @@
 var eSubCharts = {
-    power : {name:"Struja", value:"IPTL,IPTA,IPTH", labels:['Tmin','Tsr','Tmax'], unitMeasure:"(mA)"},
+    power : {name:"Struja", value:"IPTL,IPTA,IPTH", labels:['Tmin','Tsr','Tmax'], unitMeasure:"Struja (mA)"},
     true_power: {name:"Aktivna snaga", value:"PPTL,PPTA,PPTH", labels:['Pmin','Psr','Pmax'], unitMeasure:"Snaga (W)"},
     reactive_power: {name:"Reaktivna snaga", value:"PQTL,PQTA,PQTH", labels:['Qmin','Qsr','Qmax'], unitMeasure:"Reaktivna snaga (VAR)"},
     apparent_power: {name:"Prividna snaga", value:"PSTL,PSTA,PSTH", labels:['Smin','Ssr','Smax'], unitMeasure:"Prividna snaga (VA)"},

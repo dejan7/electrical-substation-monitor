@@ -1,0 +1,17 @@
+{
+  "name": "esub-socket-streamer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "SocketStreamer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "request": "^2.81.0",
+    "socket.io": "^2.0.3"
+  }
+}
