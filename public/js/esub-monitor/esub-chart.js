@@ -27,6 +27,7 @@ Vue.component('esub-chart', {
     methods: {
         updateGraph: function () {
             if (this.activeInterval === 'real-time') {
+                this.stopTimer();
                 this.startSocketConnection();
                 this.drawRealTimeChart();
             } else {
