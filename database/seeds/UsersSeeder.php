@@ -17,5 +17,12 @@ class UsersSeeder extends Seeder
             'password' => bcrypt("123123"),
             'role' => "0"
         ]);
+
+        \App\User::create([
+            'name' => "Aleksandar Stanimirović",
+            'email' => "aleksandar.stanimirovic@elfak.ni.ac.rs",
+            'password' => bcrypt("123123"),
+            'role' => "0"
+        ]);
     }
 }

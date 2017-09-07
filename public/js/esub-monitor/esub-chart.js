@@ -36,13 +36,8 @@ Vue.component('esub-chart', {
         sendAPIrequest: function () {
             this.updating = true;
             this.$http.get(SITE_URL + '/api/measurement/'+this.activeInterval+'/'+this.locationId+'/' + this.chartType.value).then(function (res) {
-                for (var i = 0; i< res.body.length; i++) {
-                    if (res.body[i][0] === "x")
-                        continue;
-                    res.body[i][0] = this.chartType.labels[i-1];
-                }
 
-                this.chart = esubChartManager.buildChart(res.body, this.$refs.chartDiv, this.activeInterval);
+                this.chart = esubChartManager.buildChart(res.body, this.$refs.chartDiv, this.activeInterval, this.chartType);
 
                 //this.startTimer();
                 this.updating = false;
@@ -56,41 +51,36 @@ Vue.component('esub-chart', {
             eventBus.$emit('requesting-websocket-connect');
         },
         drawRealTimeChart: function () {
-            this.realTimeChartData = [];
-            this.realTimeChartData.push(['x']);
-            for (let i = 0; i< this.chartType.labels.length; i++) {
-                this.realTimeChartData.push([this.chartType.labels[i]]);
-                for (let j=0;j <30;j++) {
+            let realTimeChartData = [];
 
+            var values = this.chartType.value.split(",");
+            var timestamp = Date.now() - (30 * 1000); //30 times 1 second in milliseconds
+            for (let i = 0;i<30;i++) {
+                var obj = {};
+                obj.time = timestamp;
+                for (let i = 0; i< values.length; i++) {
+                    obj[values[i]] = null;
                 }
+                realTimeChartData.push(obj);
+                timestamp = timestamp + 1000;
             }
 
-
-            this.chart = esubChartManager.buildChart([], this.$refs.chartDiv, this.activeInterval);
+            this.chart = esubChartManager.buildChart(realTimeChartData, this.$refs.chartDiv, this.activeInterval, this.chartType);
         },
         updateRealTimeChart: function (data) {
             if (this.activeInterval != 'real-time')
                 return;
-            //console.log(data);
-            let values = this.chartType.value.split(",");
-            for (let i = 0; i<= this.chartType.labels.length; i++) {
-                if (i==0)
-                    this.realTimeChartData[i].push(data.READ_TIME);
-                else
-                    this.realTimeChartData[i].push(data[values[i-1]]);
-            }
-            if (this.realTimeChartData[0].length > 30) {
-                for (var k in this.realTimeChartData) {
-                    if (this.realTimeChartData.hasOwnProperty(k)) {
-                        this.realTimeChartData[k].splice(1,1);
-                    }
-                }
-            }
-            this.chart.load({
-                columns: this.realTimeChartData,
-                //duration: 1000
-            });
+            var values = this.chartType.value.split(",");
 
+            var obj = {};
+            obj.time = data.READ_TIME;
+            for (let i = 0; i< values.length; i++) {
+                obj[values[i]] = data[values[i]];
+            }
+
+            this.chart.dataProvider.shift();
+            this.chart.dataProvider.push(obj);
+            this.chart.validateData();
         },
         startTimer: function () {
             this.stopTimer();
@@ -142,7 +132,7 @@ Vue.component('esub-chart', {
                 </div>
                 <hr>
                 <div class="content">
-                    <div class="esubChart" ref="chartDiv"></div>
+                    <div class="esubChart" ref="chartDiv" style="height: 500px;"></div>
                 </div>
             </div>
         </div>

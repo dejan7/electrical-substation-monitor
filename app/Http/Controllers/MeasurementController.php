@@ -66,7 +66,7 @@ class MeasurementController extends Controller
             $queryString .= ", mean_" . $p;
         }
 
-        $queryString .= " FROM substation_data WHERE LOCATION_ID = '$location_id' GROUP BY LOCATION_ID ORDER BY time DESC LIMIT 10";
+        $queryString .= " FROM substation_data WHERE LOCATION_ID = '$location_id' GROUP BY LOCATION_ID ORDER BY time DESC LIMIT 20";
 
         $r = $db->query($queryString);
         $points = $r->getPoints();

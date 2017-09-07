@@ -24,7 +24,7 @@ var monitor = new Vue({
         this.$nextTick(function () {
             // Code that will run only after the
             // entire view has been rendered
-            this.activeLID = substations[0].location_id;
+            this.activeLID = substations[2].location_id;
 
             /**
              * setup socket, but don't connect yet
@@ -36,9 +36,7 @@ var monitor = new Vue({
 
             this.socket.on('new-data', function(data){
                 eventBus.$emit('new-data', data);
-
-
-                console.log(data);
+                //console.log(data);
             });
 
             /**

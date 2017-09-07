@@ -25,8 +25,21 @@ class EsubChartTransformer implements \JsonSerializable
     function jsonSerialize()
     {
 
-        //return $this->points;
         $this->points = array_reverse($this->points);
+
+        for ($i=0; $i< count($this->points); $i++) {
+            foreach ($this->points[$i] as $key => $value) {
+                if ($key == "LOCATION_ID")
+                    continue;
+
+                if ($key == 'time')
+                    $this->points[$i][$key] = strtotime($this->points[$i][$key]) * 1000;
+                else
+                    $this->points[$i][$key] = round($this->points[$i][$key], 2);
+            }
+        }
+        return $this->points;
+/*
 
         $lines = [];
         foreach ($this->points as $point) {
@@ -35,14 +48,11 @@ class EsubChartTransformer implements \JsonSerializable
                 if ($key == "LOCATION_ID")
                     continue;
 
-                $trKey = $key == 'time' ? 'x' : $key;
-
                 if (!isset($lines[$i])) {
                     $lines[$i] = [];
-                    $lines[$i][] = $trKey;
                 }
 
-                if ($trKey == 'x')
+                if ($key == 'time')
                     $lines[$i][] = strtotime($point['time']) * 1000;
                 else
                     $lines[$i][] = round($point[$key], 2);
@@ -50,6 +60,6 @@ class EsubChartTransformer implements \JsonSerializable
                 $i++;
             }
         }
-        return $lines;
+        return $lines;*/
     }
 }

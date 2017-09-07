@@ -19,7 +19,6 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
     <link href="{{ asset('css/themify-icons.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/1.0.1/billboard.min.css">
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
     <link href="{{ asset('css/esub.css') }}" rel="stylesheet">
 
@@ -41,12 +40,11 @@
 <script src="{{ asset('js/paper-dashboard.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/1.0.1/billboard.min.js"></script>
 
 <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
 <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
