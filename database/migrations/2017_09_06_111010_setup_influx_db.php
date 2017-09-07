@@ -13,7 +13,7 @@ class SetupInfluxDb extends Migration
      */
     public function up()
     {
-        return;
+        //return;
         //create DBs
         $db = Influx::selectDB(env('INFLUX_DB_NAME'));
         $db->create();
@@ -86,7 +86,7 @@ class SetupInfluxDb extends Migration
      */
     public function down()
     {
-        return;
+        //return;
         $db = Influx::selectDB(env('INFLUX_DB_NAME'));
         $db->drop();
         $db = Influx::selectDB(env('INFLUX_DB_NAME')."_1m");
