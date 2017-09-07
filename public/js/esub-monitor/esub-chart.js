@@ -39,7 +39,7 @@ Vue.component('esub-chart', {
 
                 this.chart = esubChartManager.buildChart(res.body, this.$refs.chartDiv, this.activeInterval, this.chartType);
 
-                //this.startTimer();
+                this.startTimer();
                 this.updating = false;
 
             }, function (err) {
