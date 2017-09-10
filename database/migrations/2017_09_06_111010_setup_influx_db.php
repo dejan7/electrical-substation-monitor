@@ -16,7 +16,7 @@ class SetupInfluxDb extends Migration
         //return;
         //create DBs
         $db = Influx::selectDB(env('INFLUX_DB_NAME'));
-        $db->create();
+        $db->create(new \InfluxDB\Database\RetentionPolicy('2day', '2d', 1, true));
 
         $db = Influx::selectDB(env('INFLUX_DB_NAME')."_1m");
         $db->create();

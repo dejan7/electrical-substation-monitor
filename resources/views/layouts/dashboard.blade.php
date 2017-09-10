@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li class="{{strpos(Route::current()->uri, "alerts") === 0  ? "active" : ''}}">
-                        <a href="#">
+                        <a href="{{url('/alerts')}}">
                             <i class="fa fa-exclamation-triangle"></i>
                             <p>Upozorenja</p>
                         </a>

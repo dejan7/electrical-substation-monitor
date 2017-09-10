@@ -33,7 +33,6 @@ class InfluxQueryBuilder
         $query .= $this->generateTimeWhereConditions();
 
 
-
         $offset = $this->perPage * $this->data['page'];
         $query .= " ORDER BY time ASC LIMIT $this->perPage OFFSET $offset";
 
@@ -147,8 +146,6 @@ class InfluxQueryBuilder
 
         return $query;
     }
-
-
 
     private function getComparison($operator)
     {

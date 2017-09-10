@@ -10,3 +10,6 @@ Route::post('/users/{id}', 'UsersController@postUpdateUser');
 
 Route::get('/queries', 'QueriesController@index');
 
+Route::get('/alerts', 'AlertsController@index');
+Route::post('/alerts', 'AlertsController@storeAlerts');
+
