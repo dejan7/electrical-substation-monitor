@@ -79,7 +79,7 @@
                 </select>
                 pošalji mi mail.
                 <button v-show="i == (rows.length-1)" class="btn btn-success btn-fill" @click="addRow()" type="button">+</button>
-                <button v-show="i > 0" class="btn btn-danger btn-fill" @click="removeRow(i)" type="button">-</button>
+                <button class="btn btn-danger btn-fill" @click="removeRow(i)" type="button">-</button>
                 <hr>
                 </div>
              </div>
