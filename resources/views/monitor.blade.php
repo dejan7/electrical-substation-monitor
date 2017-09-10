@@ -20,7 +20,6 @@
 
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <script src="{{ asset('js/esub-monitor/esub-vars.js') }}"></script>
     <script src="{{ asset('js/esub-monitor/esub-chart.js') }}"></script>
     <script src="{{ asset('js/esub-monitor/chart-manager.js') }}"></script>
     <script src="{{ asset('js/esub-monitor/monitor.js') }}"></script>

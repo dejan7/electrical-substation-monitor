@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="wrapper">
         <div class="sidebar" data-background-color="black" data-active-color="danger">
@@ -17,25 +16,25 @@
                 </div>
 
                 <ul class="nav">
-                    <li class="active">
-                        <a href="#">
+                    <li class="{{Route::current()->uri == "/" ? "active" : ''}}">
+                        <a href="{{url('/')}}">
                             <i class="ti-pulse"></i>
                             <p>Monitor</p>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="#">
+                    <li class="{{strpos(Route::current()->uri, "queries") === 0  ? "active" : ''}}">
+                        <a href="{{url('/queries')}}">
                             <i class="ti-bar-chart"></i>
                             <p>Upiti</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
+                    <li class="{{strpos(Route::current()->uri, "users") === 0  ? "active" : ''}}">
+                        <a href="{{url('/users')}}">
                             <i class="ti-user"></i>
                             <p>Korisnici</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{strpos(Route::current()->uri, "alerts") === 0  ? "active" : ''}}">
                         <a href="#">
                             <i class="fa fa-exclamation-triangle"></i>
                             <p>Upozorenja</p>

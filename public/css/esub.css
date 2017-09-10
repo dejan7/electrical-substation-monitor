@@ -268,3 +268,17 @@
 .realTimeChart .liveTick {
     display: inline-block;
 }
+
+.inlinecontrol {
+    width: auto;
+    display: inline;
+}
+
+.query-row {
+    margin-bottom: 15px;
+}
+
+.bootstrap-datetimepicker-widget {
+    visibility: visible;
+    opacity: 1;
+}

@@ -86,4 +86,10 @@ class MetricEnum
     const EQTP = 'EQTP';
 
     const RESOLUTION_TYPE_ID = 'RESOLUTION_TYPE_ID';
+
+    public static function exists($const) {
+        /*constant('self::'. $const);
+
+        return $has;*/
+    }
 }
