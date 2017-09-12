@@ -32,14 +32,14 @@ class InfluxQueryBuilder
         $query .= $this->generateLocationWhereConditions();
         $query .= $this->generateTimeWhereConditions();
 
-
         $offset = $this->perPage * $this->data['page'];
         $query .= " ORDER BY time ASC LIMIT $this->perPage OFFSET $offset";
 
         return $query;
     }
 
-    public function getPaginationQuery() {
+    public function getPaginationQuery()
+    {
         $query = "";
         $query .= $this->getCountClause();
         $query .= $this->generateWhereConditions();
@@ -49,7 +49,8 @@ class InfluxQueryBuilder
         return $query;
     }
 
-    private function getCountClause() {
+    private function getCountClause()
+    {
         $query = "SELECT COUNT(mean_IPTH) FROM substation_data ";
         return $query;
     }
@@ -58,8 +59,26 @@ class InfluxQueryBuilder
     {
         $query = "SELECT ";
 
+
         foreach ($this->data['rows'] as $i =>$row) {
+            if ($this->data['aggregate'] !== 'none')
+                $query .= $this->data['aggregate'] . "(";
+
+            if ($this->data['selector'] !== 'none')
+                $query .= $this->data['selector'] . "(";
+
             $query .= "mean_" . $row['column'];
+
+            if ($this->data['aggregate'] !== 'none')
+                $query .= ")";
+
+            if ($this->data['selector'] !== 'none') {
+                if ($this->data['selector'] == 'BOTTOM' || $this->data['selector'] == 'PERCENTILE' || $this->data['selector'] == 'SAMPLE' || $this->data['selector'] == 'TOP')
+                    $query .= ",". $this->data['selectorModifier'];
+
+                $query .= ")";
+            }
+
             if ($i != (count($this->data['rows']) -1))
                 $query .=",";
         }

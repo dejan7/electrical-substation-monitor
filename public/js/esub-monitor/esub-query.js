@@ -18,7 +18,10 @@ var queryVue = new Vue({
             maxPages: 1,
             isLoading: false,
             substations: substations,
-            substationIDs: [41]
+            substationIDs: [41],
+            aggregate: 'none',
+            selector: 'none',
+            selectorModifier: ""
         }
     },
     methods: {
@@ -44,12 +47,21 @@ var queryVue = new Vue({
             for (var i=0; i< this.rows.length; i++) {
                 this.selectedColumns.push(this.dataKeyValues[this.rows[i].column]);
             }
-            this.$http.post(SITE_URL + '/api/query/', {rows: this.rows, start: this.start, end: this.end, page: this.currentPage, lids: this.substationIDs})
+            this.$http.post(SITE_URL + '/api/query/', {
+                rows: this.rows,
+                start: this.start,
+                end: this.end,
+                page: this.currentPage,
+                lids: this.substationIDs,
+                aggregate: this.aggregate,
+                selector: this.selector,
+                selectorModifier: this.selectorModifier
+            })
                 .then(function (res) {
                     for (var i =0; i < res.body.results.length; i++) {
                         res.body.results[i].time = moment(res.body.results[i].time).format("YYYY/MM/DD HH:mm");
                     }
-                    //console.log(res.body);
+                    console.log(res.body);
                     this.receivedRows = res.body.results;
                     this.maxCount = res.body.total;
                     this.isLoading = false;
@@ -108,11 +120,33 @@ var queryVue = new Vue({
                         <button v-show="i > 0" class="btn btn-danger btn-fill" @click="removeRow(i)">-</button>
                        
                     </div>
-                    u vremenskom periodu od
+                        <select class="form-control inlinecontrol border-input" v-model="aggregate" v-show="selector == 'none'">
+                            <option value="none">Bez funkcije agregacije</option>
+                            <option value="COUNT">COUNT</option>
+                            <option value="INTEGRAL">INTEGRAL</option>
+                            <option value="MEAN">MEAN</option>
+                            <option value="MEDIAN">MEDIAN</option>
+                            <option value="MODE">MODE</option>
+                            <option value="SPREAD">SPREAD</option>
+                            <option value="STDDEV">STDDEV</option>
+                            <option value="SUM">SUM</option>
+                        </select>
+                        <select class="form-control inlinecontrol border-input" v-model="selector" v-show="aggregate == 'none'">
+                            <option value="none">Bez selektora</option>
+                            <option value="BOTTOM">BOTTOM</option>
+                            <option value="FIRST">FIRST</option>
+                            <option value="LAST">LAST</option>
+                            <option value="MAX">MAX</option>
+                            <option value="MIN">MIN</option>
+                            <option value="PERCENTILE">PERCENTILE</option>
+                            <option value="SAMPLE">SAMPLE</option>
+                            <option value="TOP">TOP</option>
+                        </select>
+                        <input class="form-control inlinecontrol border-input" v-model="selectorModifier" placeholder="N selektora" v-show="selector == 'BOTTOM' || selector == 'PERCENTILE' || selector == 'SAMPLE' || selector == 'TOP'"> 
+                        u vremenskom periodu od
                         <date-picker class="form-control inlinecontrol border-input" placeholder="Bilo kad" v-model="start" :config="{format: 'YYYY-MM-DD HH:mm'}"></date-picker>
                         do
-                        <date-picker class="form-control inlinecontrol border-input" placeholder="Bilo kad" v-model="end" :config="{format: 'YYYY-MM-DD HH:mm'}"></date-picker><br><br>
-                        
+                        <date-picker class="form-control inlinecontrol border-input" placeholder="Bilo kad" v-model="end" :config="{format: 'YYYY-MM-DD HH:mm'}"></date-picker>
                         <hr>
                             <button class='btn btn-info' v-for="s in substations" :class="{'btn-fill' : substationIDs.indexOf(s.location_id) > -1}" @click="toggleSS(s.location_id)">{{s.name}} (ID: {{s.location_id}})</button> 
                         <hr>
@@ -133,24 +167,30 @@ var queryVue = new Vue({
                  
                         <h1 v-show="isLoading" class="text-center"><i class="fa fa-spin fa-spinner"></i> </h1>
                         <div  v-show="receivedRows.length && !isLoading">
-                        <p class="text-center">Ukupno {{maxCount}} rezultata</p>
+                        <p class="text-center">Ukupno {{maxCount}} rezultat{{maxCount > 1 ? 'a' : ''}}</p>
                         <p class="text-center">Prikazujem {{currentPage+1}}. stranu. Ukupno {{maxPages}} strana.</p>
-                        <p class="text-center"><button class="btn btn-primary" v-show="currentPage > 0" @click="prevPage()">Prethodna</button> <button class="btn btn-primary" v-show="currentPage != maxPages" @click="nextPage()">Sledeća</button>  </p>
+                        <p class="text-center"><button class="btn btn-primary" v-show="currentPage > 0" @click="prevPage()">Prethodna</button> 
+                        <button class="btn btn-primary" v-show="(currentPage+1) != maxPages" @click="nextPage()">Sledeća</button>  </p>
                         <table class="table table-striped">
                             <thead>
-                                <th>Vreme</th>
-                                <th v-for="col in selectedColumns">{{col}}</th>
+                                <th v-if="aggregate == 'none'">Vreme</th>
+                                <th v-for="col in selectedColumns">
+                                    <span v-show="aggregate != 'none'">{{aggregate}}(</span>
+                                    {{col}}
+                                    <span v-show="aggregate != 'none'">)</span>
+                                </th>
                             </thead>
                             <tbody>
                                 <tr v-for="res in receivedRows">
-                                    <td>{{res.time}}</td>
+                                    <td v-if="aggregate == 'none'">{{res.time}}</td>
                                     <td v-for="(value, key) in res" v-if="key !== 'time'">{{value}}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <p class="text-center">Ukupno: {{maxCount}} rezultata</p>
                         <p class="text-center">Prikazujem {{currentPage+1}}. od {{maxPages}}. strana.</p>
-                        <p class="text-center"><button class="btn btn-primary" v-show="currentPage > 0" @click="prevPage()">Prethodna</button> <button class="btn btn-primary" v-show="currentPage != maxPages" @click="nextPage()">Sledeća</button>  </p>
+                        <p class="text-center"><button class="btn btn-primary" v-show="currentPage > 0" @click="prevPage()">Prethodna</button> 
+                        <button class="btn btn-primary" v-show="(currentPage+1) != maxPages" @click="nextPage()">Sledeća</button>  </p>
                         </div>
                     </div>
                 </div>

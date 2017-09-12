@@ -29,13 +29,17 @@ class QueriesController extends Controller
         $iqb = new InfluxQueryBuilder($request->all());
 
         $db = Influx::selectDB(env('INFLUX_DB_NAME')."_1m");
-
         $r = $db->query($iqb->getSelectQuery());
         $results = $r->getPoints();
-        $r = $db->query($iqb->getPaginationQuery());
-        $pagination = $r->getPoints();
+        if ($request->input('aggregate') == 'none' && $request->input('selector') == 'none') {
+            $r = $db->query($iqb->getPaginationQuery());
+            $pagination = $r->getPoints();
+            $count = isset($pagination[0]['count']) ? $pagination[0]['count'] : 0;
+        } else {
+            $count = 1;
+        }
 
-        return response()->json(['results' => $results, 'total' => isset($pagination[0]['count']) ? $pagination[0]['count'] : 0]);
+        return response()->json(['results' => $results, 'total' => $count]);
 
     }
 }
